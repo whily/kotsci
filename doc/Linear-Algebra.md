@@ -18,6 +18,7 @@ Quick reference
 ### Creation
 
 | Operation | Scasci | Matlab | Numpy |
+| --------- | ------ | ------ | ----- |
 | Zeroed matrix | TODO  | `c = zeros(n,m)` | `c = zeros((n,m))` |
 | Zeroed vector | TODO | `a = zeros(n)` | `a = zeros(n)` |
 | Vector of ones | TODO | `a = ones(n)` | `a = ones(n)` |
