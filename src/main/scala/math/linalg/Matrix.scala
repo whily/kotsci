@@ -26,6 +26,22 @@ class Matrix[T](val data: Array[T], val rows: Int) {
     data.length / rows
   }
 
+  override def toString = {
+    // TODO: this is a naive implementation without considering big matrix.
+    val s = new scala.StringBuilder
+    s.append("[ ")
+    for (row <- 0 until rows) {
+      if (row > 0) s.append("  ")
+      for (col <- 0 until cols) {
+        s.append(data(col + row * cols))
+        s.append(" ")
+      }
+      if (row < rows - 1) s.append("\n")
+    }
+    s.append("]")
+    s.toString
+  }
+
   val isVector: Boolean = (rows == 1 || cols == 1)
 
   def apply(index: Int) = {
