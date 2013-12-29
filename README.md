@@ -10,7 +10,7 @@ separate project.
 
 Features to include:
 
-* Linear algebra
+* [Linear algebra](https://github.com/whily/scasci/doc/Linear-Algebra.md)
 * Artificial intelligence 
 
 For more information about Scasci, please go to
