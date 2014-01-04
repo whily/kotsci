@@ -30,16 +30,22 @@ class Vec3(var x: Double, var y: Double, var z: Double) {
   override def hashCode = 
     throw new IllegalArgumentException("Vec3: hashCode not supported.")
 
+  def += (that: Vec3) {
+    x += that.x
+    y += that.y
+    z += that.z
+  }
+
   def + (that: Vec3): Vec3 = {
     var u = copy()
     u += that
     u
   }
 
-  def += (that: Vec3) {
-    x += that.x
-    y += that.y
-    z += that.z
+  def -= (that: Vec3) {
+    x -= that.x
+    y -= that.y
+    z -= that.z
   }
 
   def - (that: Vec3): Vec3 = {
@@ -48,10 +54,16 @@ class Vec3(var x: Double, var y: Double, var z: Double) {
     u
   }
 
-  def -= (that: Vec3) {
-    x -= that.x
-    y -= that.y
-    z -= that.z
+  def *= (a: Double) {
+    x *= a
+    y *= a
+    z *= a
+  }
+
+  def * (a: Double): Vec3 = {
+    var u = copy()
+    u *= a
+    u
   }
 
   /** Dot product. */
