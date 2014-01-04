@@ -13,10 +13,14 @@ import net.whily.scasci.math.linalg.Vec3
 import org.scalatest.matchers.ShouldMatchers
 import org.scalatest.FunSpec
  
-class Specs extends FunSpec with ShouldMatchers {
+class Vec3Spec extends FunSpec with ShouldMatchers {
   describe("In class Vec3") {
     it("dot prodcut") {
-      (new Vec3(1.0, 3.0, -5.0)) ⋅ (new Vec3(4.0, -2.0, -1.0)) should be (3.0)
+      Vec3(1.0, 3.0, -5.0) ⋅ Vec3(4.0, -2.0, -1.0) should be (3.0)
+    }
+
+    it("cross product") {
+      Vec3(2.0, 3.0, 4.0) × Vec3(5.0, 6.0, 7.0) should be (Vec3(-3.0, 6.0, -3.0))
     }
   }
 }

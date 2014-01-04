@@ -17,6 +17,19 @@ class Vec3(var x: Double, var y: Double, var z: Double) {
     new Vec3(x, y, z)
   }
 
+  // Note that we define quals using mutable fields, which
+  // might cause problems when using hash functions/collections.
+  // Currently hashCode throws exception direclty; if we really need
+  // to support this, we may make Vec3 as immutable (i.e. remove +=, -= methods).
+
+  override def equals(other: Any): Boolean = other match {
+    case that: Vec3 => x == that.x && y == that.y && z == that.z
+    case _ => false
+  }
+
+  override def hashCode = 
+    throw new IllegalArgumentException("Vec3: hashCode not supported.")
+
   def + (that: Vec3): Vec3 = {
     var u = copy()
     u += that
@@ -53,5 +66,5 @@ class Vec3(var x: Double, var y: Double, var z: Double) {
 }
 
 object Vec3 {
-  def Vec3(x: Double, y: Double, z: Double) = new Vec3(x, y, z)
+  def apply(x: Double, y: Double, z: Double) = new Vec3(x, y, z)
 }
