@@ -9,7 +9,7 @@
  * Copyright (C) 2013 Yujian Zhang
  */
 
-package net.whily.scasci.phys
+package net.whily.scasci
 
 package object phys {
   // Physical constants from http://physics.nist.gov/cuu/Constants/
