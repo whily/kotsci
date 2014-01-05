@@ -16,14 +16,11 @@ trait Field[@specialized(Double) T] {
   def zero: T
   def one: T
 
-  def + (x: T, y: T): T
-  def - (x: T, y: T): T
-  def * (x: T, y: T): T
-  def / (x: T, y: T): T
+  def plus(x: T, y: T): T
+  def minus(x: T, y: T): T
+  def times(x: T, y: T): T
+  def div(x: T, y: T): T
 
-  def == (x: T, y: T): Boolean
-  def != (x: T, y: T): Boolean
-  
   /** Approximately equal. */
   def ≈  (x: T, y: T): Boolean 
 }
@@ -33,13 +30,11 @@ object Field {
     def zero = 0.0
     def one = 1.0
 
-    def + (x: Double, y: Double) = x + y
-    def - (x: Double, y: Double) = x - y
-    def * (x: Double, y: Double) = x * y
-    def / (x: Double, y: Double) = x / y
+    def plus(x: Double, y: Double) = x + y
+    def minus(x: Double, y: Double) = x - y
+    def times(x: Double, y: Double) = x * y
+    def div(x: Double, y: Double) = x / y
 
-    def == (x: Double, y: Double) = x == y
-    def != (x: Double, y: Double) = x != y
     def ≈  (x: Double, y: Double): Boolean = {
       val tolerance = 1e-4
       (x - y).abs <= math.max(x.abs, y.abs) * 1e-4
