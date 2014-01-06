@@ -99,6 +99,10 @@ class Matrix[T](val data: Array[T], val rows: Int) {
   }
 }
 
-object Matrix{
+object Vector {
+  def apply[T](xs: T*)(implicit m: ClassTag[T]) = 
+    new Matrix[T](xs.toArray, xs.length)
+}
 
+object Matrix{
 }

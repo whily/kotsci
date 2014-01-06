@@ -9,12 +9,12 @@
  * Copyright (C) 2013 Yujian Zhang
  */
 
-import net.whily.scasci.math.linalg.Matrix
+import net.whily.scasci.math.linalg._
 import org.scalatest.matchers.ShouldMatchers
 import org.scalatest.FunSpec
  
 class MatrixSpec extends FunSpec with ShouldMatchers {
-  val v = new Matrix[Double](Array(1.0, 2.0, 3.0), 3)
+  val v = Vector(1.0, 2.0, 3.0)
 
   describe("For vector [1 2 3]'") {
     it("number of rows is 3") {
