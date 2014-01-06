@@ -30,6 +30,8 @@ class Vec3(var x: Double, var y: Double, var z: Double) {
   override def hashCode = 
     throw new IllegalArgumentException("Vec3: hashCode not supported.")
 
+  def unary_- : Vec3 = new Vec3(-x, -y, -z)
+
   def += (that: Vec3) {
     x += that.x
     y += that.y
@@ -63,6 +65,19 @@ class Vec3(var x: Double, var y: Double, var z: Double) {
   def * (a: Double): Vec3 = {
     var u = copy()
     u *= a
+    u
+  }
+
+  def /= (a: Double) {
+    val b = 1.0 / a
+    x *= b
+    y *= b
+    z *= b
+  }
+
+  def / (a: Double): Vec3 = {
+    var u = copy()
+    u /= a
     u
   }
 
