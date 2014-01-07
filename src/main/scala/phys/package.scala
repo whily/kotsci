@@ -11,9 +11,16 @@
 
 package net.whily.scasci
 
+/** Providing constants, functions, classes related to physics. */
 package object phys {
   // Physical constants from http://physics.nist.gov/cuu/Constants/
-  val C = 299792458.0   // Speed of light in vacuum, m / s
-  val G = 6.6738480e-11 // Newtonian constant of gravitation, m^3 / (kg * s^2)
-  val H = 6.6260695729e-34 // Planck constant, J s 
+
+  /** Speed of light in vacuum, m / s */
+  val C = 299792458.0   
+
+  /** Newtonian constant of gravitation, m^3 / (kg * s^2) */
+  val G = 6.6738480e-11 
+
+  /** Planck constant, J s */
+  val H = 6.6260695729e-34 
 }
