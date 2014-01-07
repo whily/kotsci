@@ -11,14 +11,29 @@
 
 package net.whily.scasci.math
 
-/** Trait Field is mainly used for class math.linalg.Matrix. */
+/** Modelled according to field concept in algebra. Mainly used for
+  * class math.linalg.Matrix.
+  * 
+  * @tparam T data type. Mainly Double, Complex, and GF (latter two 
+  *           not implemented yet).
+  */
 trait Field[@specialized(Double) T] {
+  /** Value 0. */
   def zero: T
+  
+  /** Value 1. */
   def one: T
 
+  /** Binary addition. */
   def plus(x: T, y: T): T
+
+  /** Binary subtraction. */
   def minus(x: T, y: T): T
+
+  /** Binary multiplication. */
   def times(x: T, y: T): T
+
+  /** Binary division. */
   def div(x: T, y: T): T
 
   /** Approximately equal. */
