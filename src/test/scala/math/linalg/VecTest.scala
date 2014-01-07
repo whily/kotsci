@@ -15,6 +15,12 @@ import org.scalatest.FunSpec
  
 class Vec3Spec extends FunSpec with ShouldMatchers {
   describe("In class Vec3") {
+    it("fill") {
+      val x = Vec3(1.0, 2.0, 3.0)
+      x.fill(4.0)
+      x should be (Vec3(4.0, 4.0, 4.0))
+    }
+
     it("unary -") {
       -Vec3(1.0, 2.0, 3.0) should be (Vec3(-1.0, -2.0, -3.0))
     }

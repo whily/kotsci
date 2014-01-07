@@ -30,6 +30,13 @@ class Vec3(var x: Double, var y: Double, var z: Double) {
   override def hashCode = 
     throw new IllegalArgumentException("Vec3: hashCode not supported.")
 
+  /** Set all elements to `v`. */
+  def fill(v: Double) = {
+    x = v
+    y = v
+    z = v
+  }
+
   def unary_- : Vec3 = new Vec3(-x, -y, -z)
 
   def += (that: Vec3) {
