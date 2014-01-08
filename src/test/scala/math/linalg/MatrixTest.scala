@@ -32,5 +32,10 @@ class MatrixSpec extends FunSpec with ShouldMatchers {
     it("the 2nd element is 2") {
       v(1) should be (2.0)
     }
+
+    it("after fill") {
+      v.fill(1.0)
+      v should be (Vector(1.0, 1.0, 1.0))
+    }
   }
 }

@@ -34,6 +34,24 @@ class Matrix[T](val data: Array[T], val rows: Int) {
     size / rows
   }
 
+  /** Equals method.
+    * 
+    * Note that we define quals using mutable fields (data array can
+    * be changed), which might cause problems when using hash
+    * functions/collections.  Currently hashCode throws exception
+    * direclty; if we really need to support this, we may make Vec3 as
+    * immutable (i.e. remove +=, -= methods).
+    */
+  override def equals(other: Any): Boolean = other match {
+    case that: Matrix[T] => rows == that.rows && cols == that.cols && 
+      (data sameElements that.data)
+    case _ => false
+  }
+
+  /** Hashcode. Disabled to avoid problems with collections. */
+  override def hashCode = 
+    throw new IllegalArgumentException("Matrix: hashCode not supported.")
+
   /** String representation of the matrix. */
   override def toString = {
     // TODO: this is a naive implementation without considering big matrix.
@@ -89,17 +107,15 @@ class Matrix[T](val data: Array[T], val rows: Int) {
     data(row + col * rows) = v
   }
 
+  /** Sets all elements to the input scalar. */
+  def fill(v: T) =  for (i <- 0 until size) data(i) = v
+
   /** Returns true if that matrix has the same shape as current matrix. */
   def sameShapeAs(that: Matrix[T]): Boolean = {
     rows == that.rows && cols == that.cols
   }
 
-  /** Binary addition.
-    * 
-    * Work around to avoid error "cannot find class tag for element type T"
-    * According to https://github.com/danielmiladinov/scala-programming-learnings/blob/master/examples/generic_arrays.scala
-    * Note that the import of scala.reflect.ClassTag is also due to this work around.
-    */
+  /** Addition. */
   def + (that: Matrix[T])(implicit m: ClassTag[T], n: Field[T]): Matrix[T] = {
     assert(sameShapeAs(that))
     val d = new Array[T](size)
@@ -109,7 +125,7 @@ class Matrix[T](val data: Array[T], val rows: Int) {
     new Matrix[T](d, rows)
   }
 
-  /** Binary subtraction. */
+  /** Subtraction. */
   def - (that: Matrix[T])(implicit m: ClassTag[T], n: Field[T]): Matrix[T] = {
     assert(sameShapeAs(that))
     val d = new Array[T](size)
