@@ -11,6 +11,8 @@
 
 package net.whily.scasci.math.linalg
 
+import net.whily.scasci.math.Field
+
 /** Specialized 3-element vector. 
   * 
   * It is simpler to use companion object to create Vec3 instances.
@@ -47,6 +49,12 @@ class Vec3(var x: Double, var y: Double, var z: Double) {
   /** Hashcode. Disabled to avoid problems with collections. */
   override def hashCode = 
     throw new IllegalArgumentException("Vec3: hashCode not supported.")
+
+  /** Approximately equal. */
+  def ≈  (that: Vec3): Boolean = {
+    val e = Field.fieldD
+    e.≈(x, that.x) && e.≈(y, that.y) && e.≈(z, that.z)
+  }
 
   /** Sets all elements to the input scalar. */
   def fill(v: Double) = {
