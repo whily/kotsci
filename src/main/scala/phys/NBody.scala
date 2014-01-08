@@ -21,15 +21,13 @@ import net.whily.scasci.math.linalg._
   * @param vel velocity in m / s
   */
 class Body(val mass: Double, var pos: Vec3, var vel: Vec3) {
-  var nb: Array[Body] = null
-
   /** jerk in m / s^3 */
   val jerk = Vec3.zeros
 
   /** Return the acceleration in m / s^2 */
-  def acc = {
+  def acc(bodies: Array[Body]) = {
     var a = Vec3.zeros
-    for (body <- nb) {
+    for (body <- bodies) {
       if (!(body eq this)) {
         val r = body.pos - pos
         val r2 = r ⋅ r
@@ -46,9 +44,9 @@ class Body(val mass: Double, var pos: Vec3, var vel: Vec3) {
   }
 
   /** Returns the potential energy of the particle. */
-  def potentialEnergy() = {
+  def potentialEnergy(bodies: Array[Body]) = {
     var p = 0.0
-    for (body <- nb) {
+    for (body <- bodies) {
       if (!(body eq this)) {
         p += body.mass / (body.pos - pos).norm
       }
@@ -64,10 +62,6 @@ class Body(val mass: Double, var pos: Vec3, var vel: Vec3) {
   * @param duration simulation running duration
   */
 class NBody(val bodies: Array[Body], val Δt: Double, val duration: Double) {
-  // Initialize backward references.
-  for (body <- bodies) 
-    body.nb = bodies
-
   private val n = bodies.length
   var time = 0.0
   private val tEnd = duration - 0.5 * Δt
@@ -90,7 +84,7 @@ class NBody(val bodies: Array[Body], val Δt: Double, val duration: Double) {
 
   /** Returns the potential energy of the system. Note that 0.5 is used
     * since the pairwise potential energy is calcualted twice. */
-  def potentialEnergy() = (0.5 * (0.0 /: bodies) (_ + _.potentialEnergy()))
+  def potentialEnergy() = (0.5 * (0.0 /: bodies) (_ + _.potentialEnergy(bodies)))
 
   /** Returns the total energy (kinetic + potential) of the particle. */
   def totalEnergy() = kineticEnergy() + potentialEnergy()
@@ -102,30 +96,30 @@ class NBody(val bodies: Array[Body], val Δt: Double, val duration: Double) {
     * http://www.artcompsci.org/vol_1/v1_web/node34.html
     */
   def leapfrog() {
-    for (b <- bodies) b.vel += b.acc * (0.5 * Δt)
+    for (b <- bodies) b.vel += b.acc(bodies) * (0.5 * Δt)
     for (b <- bodies) b.pos += b.vel * Δt 
-    for (b <- bodies) b.vel += b.acc * (0.5 * Δt) 
+    for (b <- bodies) b.vel += b.acc(bodies) * (0.5 * Δt) 
   }
 
   /** Second-order Runge-Kutta integrator. */
   def rk2() {
     val oldPos = bodies map (_.pos.copy())
-    val halfVel = bodies map (b => b.vel + b.acc * (0.5 * Δt))
+    val halfVel = bodies map (b => b.vel + b.acc(bodies) * (0.5 * Δt))
     for (b <- bodies) b.pos += b.vel * (0.5 * Δt)
-    for (b <- bodies) b.vel += b.acc * Δt
+    for (b <- bodies) b.vel += b.acc(bodies) * Δt
     for (i <- 0 until n) bodies(i).pos = oldPos(i) + halfVel(i) * Δt
   }
 
   /** Fourth-order Runge-Kutta integrator. */
   def rk4() {
     val oldPos = bodies map (_.pos.copy())
-    val a0 = bodies map (_.acc)
+    val a0 = bodies map (_.acc(bodies))
     for (i <- 0 until n) 
       bodies(i).pos = oldPos(i) + bodies(i).vel * (0.5 * Δt) + a0(i) * (0.125 * Δt * Δt)
-    val a1 = bodies map (_.acc)
+    val a1 = bodies map (_.acc(bodies))
     for (i <- 0 until n)
       bodies(i).pos = oldPos(i) + bodies(i).vel * Δt + a1(i) * (0.5 * Δt * Δt)
-    val a2 = bodies map (_.acc)
+    val a2 = bodies map (_.acc(bodies))
     for (i <- 0 until n)
       bodies(i).pos = oldPos(i) + bodies(i).vel * Δt + (a0(i) + a1(i) * 2) * (1.0 / 6.0 * Δt * Δt)
     for (i <- 0 until n)
