@@ -48,5 +48,9 @@ class Vec3Spec extends FunSpec with ShouldMatchers {
     it("cross product") {
       Vec3(2.0, 3.0, 4.0) × Vec3(5.0, 6.0, 7.0) should be (Vec3(-3.0, 6.0, -3.0))
     }
+
+    it("norm") {
+      Vec3(1.0, 2.0, 2.0).norm should be (3.0)
+    }
   }
 }

@@ -25,6 +25,13 @@ class Vec3(var x: Double, var y: Double, var z: Double) {
     new Vec3(x, y, z)
   }
 
+  /** Copies that vector into this vector. */
+  def copyFrom(that: Vec3) = {
+    x = that.x
+    y = that.y
+    z = that.z
+  }
+
   /** Equals method.
     * 
     * Note that we define quals using mutable fields, which
@@ -118,10 +125,16 @@ class Vec3(var x: Double, var y: Double, var z: Double) {
 
   /** Returns the string form of the vector. */
   override def toString = "Vec3(" + x + ", " + y + ", " + z + ")"
+
+  /** Returns the L2 vector norm, i.e. the length to the origin. */
+  def norm: Double = math.sqrt(this ⋅ this) 
 }
 
 /** Factory for [[net.whily.scasci.math.linalg.Vec3]] instance. */
 object Vec3 {
   /** Creates a three element vector with given components. */
   def apply(x: Double, y: Double, z: Double) = new Vec3(x, y, z)
+
+  /** Returns an all zeros vector. */
+  def zeros = new Vec3(0.0, 0.0, 0.0)
 }
