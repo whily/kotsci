@@ -136,10 +136,21 @@ class NBody(val bodies: Array[Body], val Δt: Double, val duration: Double) {
 /** Provides example configurations for testing. We use def instead of
   * val so that simulations could be run again and again. */
 object NBody {
-  // Configuration from section 3.1 of http://www.artcompsci.org/kali/vol/n_body_problem/volume4.pdf.
-  // The mass is normalized as the example in ACS assumes G=1.
+  // The mass is divided by G as we use the real G instead of assuming G=1.
+
+  // Configuration from section 3.1 of http://www.artcompsci.org/kali/vol/n_body_problem/volume4.pdf
   def twoBodyConfig = Array(
     new Body(0.8 / G, Vec3(0.2, 0.0, 0.0), Vec3(0.0, 0.1, 0.0)),
     new Body(0.2 / G, Vec3(-0.8, 0.0, 0.0), Vec3(0.0, -0.4, 0.0)))
   def twoBodySim = new NBody(twoBodyConfig, 0.0001, 10.0)
+
+  // Figure-eight three body configuration discovered by Montgomery and Chenciner.
+  // From section 5.1 of http://www.artcompsci.org/kali/vol/n_body_problem/volume4.pdf.
+  def figure8Config = Array(
+    new Body(1.0 / G, Vec3(0.9700436, -0.24308753, 0.0), 
+      Vec3(0.466203685, 0.43236573, 0.0)),
+    new Body(1.0 / G, Vec3(-0.9700436, 0.24308753, 0.0), 
+      Vec3(0.466203685, 0.43236573, 0.0)),
+    new Body(1.0 / G, Vec3(0.0, 0.0, 0.0), Vec3(-0.93240737, -0.86473146, 0.0)))
+  def figure8Sim = new NBody(figure8Config, 0.0001, 2.1088)
 }

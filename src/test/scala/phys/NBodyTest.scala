@@ -49,4 +49,34 @@ class NBodySpec extends FunSpec with ShouldMatchers {
       (math.abs(sim.relativeEnergyError) < 1e-13) should be (true)
     }
   }
+
+  describe("Three body figure 8 as in section 5.1 and 5.2 of http://www.artcompsci.org/kali/vol/n_body_problem/volume4.pdf") {
+    val sim = NBody.figure8Sim
+    sim.evolve("rk4")
+
+    it("RK4: correct position and velocity for the 1st body") {
+      val pos = sim.bodies(0).pos
+      val vel = sim.bodies(0).vel
+      (pos ≈ Vec3(2.5982241e-5, -2.0259655e-5, 0.0)) should be (true)
+      (vel ≈ Vec3(-0.93227637, -0.86473501, 0.0)) should be (true)
+    }
+
+    it("RK4: correct position and velocity for the 2nd body") {
+      val pos = sim.bodies(1).pos
+      val vel = sim.bodies(1).vel
+      (pos ≈ Vec3(0.97011046, -0.24305269, 0.0)) should be (true)
+      (vel ≈ Vec3(0.46619301, 0.43238574, 0.0)) should be (true)
+    }
+
+    it("RK4: correct position and velocity for the 3rd body") {
+      val pos = sim.bodies(2).pos
+      val vel = sim.bodies(2).vel
+      (pos ≈ Vec3(-0.97013644, 0.24307295, 0.0)) should be (true)
+      (vel ≈ Vec3(0.46608336, 0.43234927, 0.0)) should be (true)
+    }
+
+    it("RK4: should have small relative energy error") {
+      (math.abs(sim.relativeEnergyError) < 1e-13) should be (true)
+    }
+  }
 }
