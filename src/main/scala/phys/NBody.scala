@@ -73,6 +73,18 @@ class NBody(val bodies: Array[Body], val Δt: Double, val duration: Double) {
   private val tEnd = duration - 0.5 * Δt
   val initialEnergy = totalEnergy()
 
+  /** Run N-body simulation until current time >= tEnd. */
+  def evolve(integrator: String) {
+    while (time < tEnd) {
+      time += Δt
+      integrator match {
+        case "leapfrog" => leapfrog()
+        case "rk2"      => rk2()
+        case "rk4"      => rk4()
+      }
+    }
+  }
+
   /** Returns the kinetic energy of the system. */
   def kineticEnergy() = (0.0 /: bodies) (_ + _.kineticEnergy())
 
@@ -90,15 +102,44 @@ class NBody(val bodies: Array[Body], val Δt: Double, val duration: Double) {
     * http://www.artcompsci.org/vol_1/v1_web/node34.html
     */
   def leapfrog() {
-    bodies foreach { b => b.vel += b.acc * (0.5 * Δt) }
-    bodies foreach { b => b.pos += b.vel * Δt }
-    bodies foreach { b => b.vel += b.acc * (0.5 * Δt) }
+    for (b <- bodies) b.vel += b.acc * (0.5 * Δt)
+    for (b <- bodies) b.pos += b.vel * Δt 
+    for (b <- bodies) b.vel += b.acc * (0.5 * Δt) 
   }
 
-  def evolve() {
-    while (time < tEnd) {
-      time += Δt
-      leapfrog()
-    }
+  /** Second-order Runge-Kutta integrator. */
+  def rk2() {
+    val oldPos = bodies map (_.pos.copy())
+    val halfVel = bodies map (b => b.vel + b.acc * (0.5 * Δt))
+    for (b <- bodies) b.pos += b.vel * (0.5 * Δt)
+    for (b <- bodies) b.vel += b.acc * Δt
+    for (i <- 0 until n) bodies(i).pos = oldPos(i) + halfVel(i) * Δt
   }
+
+  /** Fourth-order Runge-Kutta integrator. */
+  def rk4() {
+    val oldPos = bodies map (_.pos.copy())
+    val a0 = bodies map (_.acc)
+    for (i <- 0 until n) 
+      bodies(i).pos = oldPos(i) + bodies(i).vel * (0.5 * Δt) + a0(i) * (0.125 * Δt * Δt)
+    val a1 = bodies map (_.acc)
+    for (i <- 0 until n)
+      bodies(i).pos = oldPos(i) + bodies(i).vel * Δt + a1(i) * (0.5 * Δt * Δt)
+    val a2 = bodies map (_.acc)
+    for (i <- 0 until n)
+      bodies(i).pos = oldPos(i) + bodies(i).vel * Δt + (a0(i) + a1(i) * 2) * (1.0 / 6.0 * Δt * Δt)
+    for (i <- 0 until n)
+      bodies(i).vel += (a0(i) + a1(i) * 4 + a2(i)) * (1.0 / 6.0 * Δt)
+  }
+}
+
+/** Provides example configurations for testing. We use def instead of
+  * val so that simulations could be run again and again. */
+object NBody {
+  // Configuration from section 3.1 of http://www.artcompsci.org/kali/vol/n_body_problem/volume4.pdf.
+  // The mass is normalized as the example in ACS assumes G=1.
+  def twoBodyConfig = Array(
+    new Body(0.8 / G, Vec3(0.2, 0.0, 0.0), Vec3(0.0, 0.1, 0.0)),
+    new Body(0.2 / G, Vec3(-0.8, 0.0, 0.0), Vec3(0.0, -0.4, 0.0)))
+  def twoBodySim = new NBody(twoBodyConfig, 0.0001, 10.0)
 }
