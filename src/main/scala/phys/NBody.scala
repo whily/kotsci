@@ -1,9 +1,9 @@
 /**
- * N-body simulation. 
+ * N-body simulation.
  *
  * @author  Yujian Zhang <yujian{dot}zhang[at]gmail(dot)com>
  *
- * License: 
+ * License:
  *   GNU General Public License v2
  *   http://www.gnu.org/licenses/gpl-2.0.html
  * Copyright (C) 2013 Yujian Zhang
@@ -15,7 +15,7 @@ import net.whily.scasci.math.linalg._
 
 /** Physical particle for N-body simulation.  We use the general term
   * instead of specific names like particles.
-  *  
+  *
   * @param mass in kg
   * @param pos position in m
   * @param vel velocity in m / s
@@ -60,15 +60,15 @@ class Body(val mass: Double, var pos: Vec3, var vel: Vec3) {
 }
 
 /** Performs N-body simulation. Based on http://www.artcompsci.org/kali/development.html
-  * 
+  *
   * In N-body simulation, we normally assume G = 1.
-  * 
+  *
   * A typical example for this class is as follows:
   * {{{
   * val sim = NBody.figure8Sim
   * sim.evolve("rk4")
   * }}}
-  * 
+  *
   * @param bodies bodies for simulation. Positions and velocities are already initialized.
   * @param Δt time quantum in s
   * @param duration simulation running duration
@@ -79,24 +79,36 @@ class NBody(val bodies: Array[Body], val Δt: Double, val duration: Double) {
   private val tEnd = duration - 0.5 * Δt
   val initialEnergy = totalEnergy()
 
-  /** Run N-body simulation until current time >= tEnd. */
+  /** Run N-body simulation until current time >= tEnd. 
+    * 
+    * @param integrator numerical intergrator
+    */
   def evolve(integrator: String) {
     while (time < tEnd) {
-      time += Δt
-      integrator match {
-        case "leapfrog" => leapfrog()
-        case "rk2"      => rk2()
-        case "rk4"      => rk4()
-      }
+      step(integrator)
+    }
+  }
+
+  /** Runs N-body simulation with one step.
+    *
+    * @param integrator numerical intergrator
+    */
+  def step(integrator: String) {
+    time += Δt
+    integrator match {
+      case "leapfrog" => leapfrog()
+      case "rk2" => rk2()
+      case "rk4" => rk4()
     }
   }
 
   /** Returns the kinetic energy of the system. */
-  def kineticEnergy() = (0.0 /: bodies) (_ + _.kineticEnergy())
+  def kineticEnergy() = (0.0 /: bodies)(_ + _.kineticEnergy())
 
   /** Returns the potential energy of the system. Note that 0.5 is used
-    * since the pairwise potential energy is calcualted twice. */
-  def potentialEnergy() = (0.5 * (0.0 /: bodies) (_ + _.potentialEnergy(bodies)))
+    * since the pairwise potential energy is calcualted twice.
+    */
+  def potentialEnergy() = (0.5 * (0.0 /: bodies)(_ + _.potentialEnergy(bodies)))
 
   /** Returns the total energy (kinetic + potential) of the particle. */
   def totalEnergy() = kineticEnergy() + potentialEnergy()
@@ -104,13 +116,13 @@ class NBody(val bodies: Array[Body], val Δt: Double, val duration: Double) {
   /** Returns the relative energey error. */
   def relativeEnergyError() = (totalEnergy() - initialEnergy) / initialEnergy
 
-  /** Use 2nd approach (i.e. velocity at integer time steps) in
+  /** Leapfrog algorithm, which is 2nd order. Algorithm details in
     * http://www.artcompsci.org/vol_1/v1_web/node34.html
     */
   def leapfrog() {
     for (b <- bodies) b.vel += b.acc(bodies) * (0.5 * Δt)
-    for (b <- bodies) b.pos += b.vel * Δt 
-    for (b <- bodies) b.vel += b.acc(bodies) * (0.5 * Δt) 
+    for (b <- bodies) b.pos += b.vel * Δt
+    for (b <- bodies) b.vel += b.acc(bodies) * (0.5 * Δt)
   }
 
   /** Second-order Runge-Kutta integrator. */
@@ -126,7 +138,7 @@ class NBody(val bodies: Array[Body], val Δt: Double, val duration: Double) {
   def rk4() {
     val oldPos = bodies map (_.pos.copy())
     val a0 = bodies map (_.acc(bodies))
-    for (i <- 0 until n) 
+    for (i <- 0 until n)
       bodies(i).pos = oldPos(i) + bodies(i).vel * (0.5 * Δt) + a0(i) * (0.125 * Δt * Δt)
     val a1 = bodies map (_.acc(bodies))
     for (i <- 0 until n)
@@ -140,7 +152,8 @@ class NBody(val bodies: Array[Body], val Δt: Double, val duration: Double) {
 }
 
 /** Provides example configurations for testing. We use def instead of
-  * val so that simulations could be run again and again. */
+  * val so that simulations could be run again and again.
+  */
 object NBody {
   // Configuration from section 3.1 of http://www.artcompsci.org/kali/vol/n_body_problem/volume4.pdf
   def twoBodyConfig = Array(
@@ -151,9 +164,9 @@ object NBody {
   // Figure-eight three body configuration discovered by Montgomery and Chenciner.
   // From section 5.1 of http://www.artcompsci.org/kali/vol/n_body_problem/volume4.pdf.
   def figure8Config = Array(
-    new Body(1.0, Vec3(0.9700436, -0.24308753, 0.0), 
+    new Body(1.0, Vec3(0.9700436, -0.24308753, 0.0),
       Vec3(0.466203685, 0.43236573, 0.0)),
-    new Body(1.0, Vec3(-0.9700436, 0.24308753, 0.0), 
+    new Body(1.0, Vec3(-0.9700436, 0.24308753, 0.0),
       Vec3(0.466203685, 0.43236573, 0.0)),
     new Body(1.0, Vec3(0.0, 0.0, 0.0), Vec3(-0.93240737, -0.86473146, 0.0)))
   def figure8Sim = new NBody(figure8Config, 0.0001, 2.1088)
