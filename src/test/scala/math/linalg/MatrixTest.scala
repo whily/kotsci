@@ -26,11 +26,17 @@ class MatrixSpec extends FunSpec with ShouldMatchers {
     }
 
     it("is a vector") {
-      v.isVector should be (true)
+      v should be a ('vector)
     }
 
     it("the 2nd element is 2") {
       v(1) should be (2.0)
+    }
+
+    it("wrong index should raise an exception") {
+      evaluating {
+        v(5)
+      } should produce [IndexOutOfBoundsException]
     }
 
     it("after fill") {

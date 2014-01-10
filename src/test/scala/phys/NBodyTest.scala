@@ -19,13 +19,13 @@ class NBodySpec extends FunSpec with ShouldMatchers {
     it("Leapfrog: should have small relative energy error") {
       val sim = NBody.twoBodySim
       sim.evolve("leapfrog")
-      (math.abs(sim.relativeEnergyError) < 1e-8) should be (true)
+      math.abs(sim.relativeEnergyError) should be < 1e-8
     }
 
     it("RK2: should have small relative energy error") {
       val sim = NBody.twoBodySim
       sim.evolve("rk2")
-      (math.abs(sim.relativeEnergyError) < 1e-7) should be (true)
+      math.abs(sim.relativeEnergyError) should be < 1e-7
     }
     
     val sim = NBody.twoBodySim
@@ -46,7 +46,7 @@ class NBodySpec extends FunSpec with ShouldMatchers {
     }
 
     it("RK4: should have small relative energy error") {
-      (math.abs(sim.relativeEnergyError) < 1e-13) should be (true)
+      math.abs(sim.relativeEnergyError) should be < 1e-13
     }
   }
 
@@ -76,7 +76,7 @@ class NBodySpec extends FunSpec with ShouldMatchers {
     }
 
     it("RK4: should have small relative energy error") {
-      (math.abs(sim.relativeEnergyError) < 1e-13) should be (true)
+      math.abs(sim.relativeEnergyError) should be < 1e-13
     }
   }
 }
