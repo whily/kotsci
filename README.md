@@ -31,7 +31,9 @@ The following tools are needed to build Scasci from source:
 * sbt (0.12.4)
   
 The project follows general sbt architecture, therefore normal sbt
-commands can be used to build the library: compile, test, etc.
+commands can be used to build the library: compile, doc, test,
+etc. For details, please refer
+<http://scala.micronauticsresearch.com/sbt/useful-sbt-commands>.
 
 To use the library, include following line in your sbt configuration
 (TODO). 
