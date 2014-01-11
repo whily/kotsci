@@ -73,17 +73,17 @@ class Body(val mass: Double, var pos: Vec3, var vel: Vec3) {
   * @param Δt time quantum in s
   * @param duration simulation running duration
   */
-class NBody(val bodies: Array[Body], val Δt: Double, val duration: Double) {
+class NBody(val bodies: Array[Body], val Δt: Double) {
   private val n = bodies.length
   var time = 0.0
-  private val tEnd = duration - 0.5 * Δt
   val initialEnergy = totalEnergy()
 
   /** Run N-body simulation until current time >= tEnd. 
     * 
     * @param integrator numerical intergrator
     */
-  def evolve(integrator: String) {
+  def evolve(integrator: String, duration: Double) {
+    val tEnd = duration - 0.5 * Δt
     while (time < tEnd) {
       step(integrator)
     }
@@ -159,7 +159,7 @@ object NBody {
   def twoBodyConfig = Array(
     new Body(0.8, Vec3(0.2, 0.0, 0.0), Vec3(0.0, 0.1, 0.0)),
     new Body(0.2, Vec3(-0.8, 0.0, 0.0), Vec3(0.0, -0.4, 0.0)))
-  def twoBodySim = new NBody(twoBodyConfig, 0.0001, 10.0)
+  def twoBodySim = new NBody(twoBodyConfig, 0.0001) // Duration: 10.0
 
   // Figure-eight three body configuration discovered by Montgomery and Chenciner.
   // From section 5.1 of http://www.artcompsci.org/kali/vol/n_body_problem/volume4.pdf.
@@ -169,5 +169,5 @@ object NBody {
     new Body(1.0, Vec3(-0.9700436, 0.24308753, 0.0),
       Vec3(0.466203685, 0.43236573, 0.0)),
     new Body(1.0, Vec3(0.0, 0.0, 0.0), Vec3(-0.93240737, -0.86473146, 0.0)))
-  def figure8Sim = new NBody(figure8Config, 0.0001, 2.1088)
+  def figure8Sim = new NBody(figure8Config, 0.0001) // Duration: 2.1088
 }
