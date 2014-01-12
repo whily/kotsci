@@ -168,6 +168,17 @@ object NBody {
       Vec3(0.466203685, 0.43236573, 0.0)),
     new Body(1.0, Vec3(-0.9700436, 0.24308753, 0.0),
       Vec3(0.466203685, 0.43236573, 0.0)),
-    new Body(1.0, Vec3(0.0, 0.0, 0.0), Vec3(-0.93240737, -0.86473146, 0.0)))
+    new Body(1.0, Vec3(0.0, 0.0, 0.0), 
+      Vec3(-0.93240737, -0.86473146, 0.0)))
   def figure8Sim = new NBody(figure8Config, 0.0001) // Duration: 2.1088
+
+  // Broucke A 2 in http://suki.ipb.ac.rs/3body/bsol.php?id=1
+  def brouckeA2Config = Array(
+    new Body(1.0, Vec3(0.3361300950, 0.0, 0.0),
+      Vec3(0.0, 1.5324315370, 0.0)),
+    new Body(1.0, Vec3(0.7699893804, 0.0, 0.0),
+      Vec3(0.0, -0.6287350978, 0.0)),
+    new Body(1.0, Vec3(-1.1061194753, 0.0, 0.0), 
+      Vec3(0.0, -0.9036964391, 0.0)))
+  def brouckeA2Sim = new NBody(brouckeA2Config, 0.0001) // Period: 7.702408
 }
