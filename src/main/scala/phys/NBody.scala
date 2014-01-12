@@ -218,6 +218,34 @@ object NBody {
       new Body(1.0, Vec3(-1.1061194753, 0.0, 0.0),
         Vec3(0.0, -0.9036964391, 0.0))))
 
+  // Broucke A 9 in http://suki.ipb.ac.rs/3body/bsol.php?id=8
+  def brouckeA9Config = NBodyConfig(
+    "Broucke A 9",
+    1975,
+    20.897689,
+    -0.872459,
+    Array(
+      new Body(1.0, Vec3(0.0557080334, 0.0, 0.0),
+        Vec3(0.0, 1.0824099428, 0.0)),
+      new Body(1.0, Vec3(1.3308335036, 0.0, 0.0),
+        Vec3(0.0, -0.2339059386, 0.0)),
+      new Body(1.0, Vec3(-1.3865415370, 0.0, 0.0),
+        Vec3(0.0, -0.8485040042, 0.0))))
+
+  // Broucke A 10 in http://suki.ipb.ac.rs/3body/bsol.php?id=9
+  def brouckeA10Config = NBodyConfig(
+    "Broucke A 10",
+    1975,
+    32.610953,
+    -0.518368,
+    Array(
+      new Body(1.0, Vec3(-0.5426216182, 0.0, 0.0),
+        Vec3(0.0, 0.8750200467, 0.0)),
+      new Body(1.0, Vec3(2.5274928067, 0.0, 0.0),
+        Vec3(0.0, -0.0526955841, 0.0)),
+      new Body(1.0, Vec3(-1.9848711885, 0.0, 0.0),
+        Vec3(0.0, -0.8223244626, 0.0))))
+
   // Figure 8 in http://suki.ipb.ac.rs/3body/sol.php?id=1
   def figure8Config = {
     val p1 = 0.347111
@@ -255,7 +283,8 @@ object NBody {
   }
 
   def threeBodyConfigs = Array(
-    brouckeA1Config, brouckeA2Config, 
-    figure8Config, 
-    butterflyIConfig)
+    brouckeA1Config, brouckeA2Config, brouckeA9Config, brouckeA10Config, 
+    figure8Config 
+    // TODO: removed for now due to near encouter problem: butterflyIConfig
+  )
 }
