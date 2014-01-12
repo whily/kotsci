@@ -78,6 +78,8 @@ class NBody(val bodies: Array[Body], val Δt: Double) {
   var time = 0.0
   val initialEnergy = totalEnergy()
 
+  def this(config: NBodyConfig, Δt: Double) = this(config.bodies, Δt)
+
   /** Run N-body simulation until current time >= tEnd. 
     * 
     * @param integrator numerical intergrator
@@ -151,34 +153,108 @@ class NBody(val bodies: Array[Body], val Δt: Double) {
   }
 }
 
+/** Periodic solutions for N-body problem. Such configuration is
+  * mainly used for demo, as well as regressions test cases.
+  * 
+  * Most three body solutions are from http://suki.ipb.ac.rs/3body/
+  * 
+  * @param name solution name
+  * @param discovered the year the solution was discovered
+  * @param period solution period
+  * @param energy solution energy
+  * @param bodies an array of bodies 
+  */
+case class NBodyConfig(name: String, discovered: Int, period: Double, energy: Double,
+  bodies: Array[Body])
+
 /** Provides example configurations for testing. We use def instead of
   * val so that simulations could be run again and again.
   */
 object NBody {
   // Configuration from section 3.1 of http://www.artcompsci.org/kali/vol/n_body_problem/volume4.pdf
-  def twoBodyConfig = Array(
+  def twoBodyParam = Array(
     new Body(0.8, Vec3(0.2, 0.0, 0.0), Vec3(0.0, 0.1, 0.0)),
     new Body(0.2, Vec3(-0.8, 0.0, 0.0), Vec3(0.0, -0.4, 0.0)))
-  def twoBodySim = new NBody(twoBodyConfig, 0.0001) // Duration: 10.0
+  def twoBodyParamSim = new NBody(twoBodyParam, 0.0001) // Duration: 10.0
 
   // Figure-eight three body configuration discovered by Montgomery and Chenciner.
   // From section 5.1 of http://www.artcompsci.org/kali/vol/n_body_problem/volume4.pdf.
-  def figure8Config = Array(
+  def figure8Param = Array(
     new Body(1.0, Vec3(0.9700436, -0.24308753, 0.0),
       Vec3(0.466203685, 0.43236573, 0.0)),
     new Body(1.0, Vec3(-0.9700436, 0.24308753, 0.0),
       Vec3(0.466203685, 0.43236573, 0.0)),
     new Body(1.0, Vec3(0.0, 0.0, 0.0), 
       Vec3(-0.93240737, -0.86473146, 0.0)))
-  def figure8Sim = new NBody(figure8Config, 0.0001) // Duration: 2.1088
+  def figure8ParamSim = new NBody(figure8Param, 0.0001) // Duration: 2.1088
+
+  // Below configurations are from three body gallery of http://suki.ipb.ac.rs/3body/
+
+  // Broucke A 1 in http://suki.ipb.ac.rs/3body/bsol.php?id=0
+  def brouckeA1Config = NBodyConfig(
+    "Broucke A 1",
+    1975,
+    6.283213,
+    -0.854131,
+    Array(
+      new Body(1.0, Vec3(-0.9892620043, 0.0, 0.0),
+      Vec3(0.0, 1.9169244185, 0.0)),
+      new Body(1.0, Vec3(2.2096177241, 0.0, 0.0),
+        Vec3(0.0, 0.1910268738, 0.0)),
+      new Body(1.0, Vec3(-1.2203557197, 0.0, 0.0),
+        Vec3(0.0, -2.1079512924, 0.0))))
+  def brouckeA1Sim = new NBody(brouckeA1Config, 0.0001)
 
   // Broucke A 2 in http://suki.ipb.ac.rs/3body/bsol.php?id=1
-  def brouckeA2Config = Array(
-    new Body(1.0, Vec3(0.3361300950, 0.0, 0.0),
-      Vec3(0.0, 1.5324315370, 0.0)),
-    new Body(1.0, Vec3(0.7699893804, 0.0, 0.0),
-      Vec3(0.0, -0.6287350978, 0.0)),
-    new Body(1.0, Vec3(-1.1061194753, 0.0, 0.0), 
-      Vec3(0.0, -0.9036964391, 0.0)))
-  def brouckeA2Sim = new NBody(brouckeA2Config, 0.0001) // Period: 7.702408
+  def brouckeA2Config = NBodyConfig(
+    "Broucke A 2",
+    1975,
+    7.702408,
+    -1.751113,
+    Array(
+      new Body(1.0, Vec3(0.3361300950, 0.0, 0.0),
+        Vec3(0.0, 1.5324315370, 0.0)),
+      new Body(1.0, Vec3(0.7699893804, 0.0, 0.0),
+        Vec3(0.0, -0.6287350978, 0.0)),
+      new Body(1.0, Vec3(-1.1061194753, 0.0, 0.0),
+        Vec3(0.0, -0.9036964391, 0.0))))
+  def brouckeA2Sim = new NBody(brouckeA2Config, 0.0001) 
+
+  // Figure 8 in http://suki.ipb.ac.rs/3body/sol.php?id=1
+  def figure8Config = {
+    val p1 = 0.347111
+    val p2 = 0.532728
+    NBodyConfig(
+      "Figure 8",
+      1993,
+      6.324449,
+      -1.287146,
+      Array(
+        new Body(1.0, Vec3(-1.0, 0.0, 0.0),
+          Vec3(p1, p2, 0.0)),
+        new Body(1.0, Vec3(1.0, 0.0, 0.0),
+          Vec3(p1, p2, 0.0)),
+        new Body(1.0, Vec3(0.0, 0.0, 0.0),
+          Vec3(-2.0 * p1, -2.0 * p2, 0.0))))
+  }
+  def figure8Sim = new NBody(figure8Config, 0.0001) 
+
+  // Butterfly I in http://suki.ipb.ac.rs/3body/sol.php?id=2
+  def butterflyIConfig = {
+    val p1 = 0.306893
+    val p2 = 0.125507
+    NBodyConfig(
+      "Butterfly I",
+      2012,
+      6.235641,
+      -2.170195,
+      Array(
+        new Body(1.0, Vec3(-1.0, 0.0, 0.0),
+          Vec3(p1, p2, 0.0)),
+        new Body(1.0, Vec3(1.0, 0.0, 0.0),
+          Vec3(p1, p2, 0.0)),
+        new Body(1.0, Vec3(0.0, 0.0, 0.0),
+          Vec3(-2.0 * p1, -2.0 * p2, 0.0))))
+  }
+  def butterflyISim = new NBody(butterflyIConfig, 0.0001) 
 }

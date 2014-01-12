@@ -17,18 +17,18 @@ import org.scalatest.FunSpec
 class NBodySpec extends FunSpec with ShouldMatchers {
   describe("Two body as in section 3.1 and 4.7 of http://www.artcompsci.org/kali/vol/n_body_problem/volume4.pdf") {
     it("Leapfrog: should have small relative energy error") {
-      val sim = NBody.twoBodySim
+      val sim = NBody.twoBodyParamSim
       sim.evolve("leapfrog", 10.0)
       math.abs(sim.relativeEnergyError) should be < 1e-8
     }
 
     it("RK2: should have small relative energy error") {
-      val sim = NBody.twoBodySim
+      val sim = NBody.twoBodyParamSim
       sim.evolve("rk2", 10.0)
       math.abs(sim.relativeEnergyError) should be < 1e-7
     }
     
-    val sim = NBody.twoBodySim
+    val sim = NBody.twoBodyParamSim
     sim.evolve("rk4", 10.0)
 
     it("RK4: correct position and velocity for the 1st body") {
@@ -51,7 +51,7 @@ class NBodySpec extends FunSpec with ShouldMatchers {
   }
 
   describe("Three body figure 8 as in section 5.1 and 5.2 of http://www.artcompsci.org/kali/vol/n_body_problem/volume4.pdf") {
-    val sim = NBody.figure8Sim
+    val sim = NBody.figure8ParamSim
     sim.evolve("rk4", 2.1088)
 
     it("RK4: correct position and velocity for the 1st body") {
