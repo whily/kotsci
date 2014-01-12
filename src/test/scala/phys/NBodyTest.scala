@@ -9,6 +9,7 @@
  * Copyright (C) 2013 Yujian Zhang
  */
 
+import net.whily.scasci.math._
 import net.whily.scasci.math.linalg._
 import net.whily.scasci.phys._
 import org.scalatest.matchers.ShouldMatchers
@@ -77,6 +78,17 @@ class NBodySpec extends FunSpec with ShouldMatchers {
 
     it("RK4: should have small relative energy error") {
       math.abs(sim.relativeEnergyError) should be < 1e-13
+    }
+  }
+
+  describe("Test energy of three body configurations from http://suki.ipb.ac.rs/3body/") {
+    it("Energy test") {
+      for (config <- NBody.threeBodyConfigs) {
+        val sim = new NBody(config, 0.0001) 
+        Field.fieldD.≈(sim.totalEnergy(), config.energy) should be (true)
+        sim.evolve("rk4", 1.0)
+        math.abs(sim.relativeEnergyError) should be < 1e-12
+      }
     }
   }
 }

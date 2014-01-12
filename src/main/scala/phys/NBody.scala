@@ -203,7 +203,6 @@ object NBody {
         Vec3(0.0, 0.1910268738, 0.0)),
       new Body(1.0, Vec3(-1.2203557197, 0.0, 0.0),
         Vec3(0.0, -2.1079512924, 0.0))))
-  def brouckeA1Sim = new NBody(brouckeA1Config, 0.0001)
 
   // Broucke A 2 in http://suki.ipb.ac.rs/3body/bsol.php?id=1
   def brouckeA2Config = NBodyConfig(
@@ -218,7 +217,6 @@ object NBody {
         Vec3(0.0, -0.6287350978, 0.0)),
       new Body(1.0, Vec3(-1.1061194753, 0.0, 0.0),
         Vec3(0.0, -0.9036964391, 0.0))))
-  def brouckeA2Sim = new NBody(brouckeA2Config, 0.0001) 
 
   // Figure 8 in http://suki.ipb.ac.rs/3body/sol.php?id=1
   def figure8Config = {
@@ -237,7 +235,6 @@ object NBody {
         new Body(1.0, Vec3(0.0, 0.0, 0.0),
           Vec3(-2.0 * p1, -2.0 * p2, 0.0))))
   }
-  def figure8Sim = new NBody(figure8Config, 0.0001) 
 
   // Butterfly I in http://suki.ipb.ac.rs/3body/sol.php?id=2
   def butterflyIConfig = {
@@ -256,5 +253,9 @@ object NBody {
         new Body(1.0, Vec3(0.0, 0.0, 0.0),
           Vec3(-2.0 * p1, -2.0 * p2, 0.0))))
   }
-  def butterflyISim = new NBody(butterflyIConfig, 0.0001) 
+
+  def threeBodyConfigs = Array(
+    brouckeA1Config, brouckeA2Config, 
+    figure8Config, 
+    butterflyIConfig)
 }
