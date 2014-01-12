@@ -35,6 +35,9 @@ commands can be used to build the library: compile, doc, test,
 etc. For details, please refer
 <http://scala.micronauticsresearch.com/sbt/useful-sbt-commands>.
 
-To use the library, include following line in your sbt configuration
-(TODO). 
-        
+Currently the library is not published to any public repository
+yet. To use this library with your project, you need to download the
+source code, and run `sbt publish-local` in your command line. Then,
+include following line in your sbt configuration file.
+
+          libraryDependencies += "net.whily" %% "scasci" % "0.0.1-SNAPSHOT"
