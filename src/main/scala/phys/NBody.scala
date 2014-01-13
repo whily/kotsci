@@ -57,6 +57,11 @@ class Body(val mass: Double, var pos: Vec3, var vel: Vec3) {
     // We assume G = 1, otherwise use the following line:
     // -G * mass * p
   }
+
+  /** Return the angular momentum in vector form. */
+  def angularMomentum() = {
+    (pos * mass) × vel
+  }
 }
 
 /** Performs N-body simulation. Based on http://www.artcompsci.org/kali/development.html
@@ -118,6 +123,14 @@ class NBody(val bodies: Array[Body], val Δt: Double) {
   /** Returns the relative energey error. */
   def relativeEnergyError() = (totalEnergy() - initialEnergy) / initialEnergy
 
+  /** Return the angular momentum in scalar. */
+  def angularMomentum() = {
+    var sum = Vec3.zeros
+    for (body <- bodies)
+      sum += body.angularMomentum()
+    sum.norm
+  }
+
   /** Leapfrog algorithm, which is 2nd order. Algorithm details in
     * http://www.artcompsci.org/vol_1/v1_web/node34.html
     */
@@ -162,10 +175,11 @@ class NBody(val bodies: Array[Body], val Δt: Double) {
   * @param discovered the year the solution was discovered
   * @param period solution period
   * @param energy solution energy
+  * @param angularMomentum angular momentum (the norm)
   * @param bodies an array of bodies 
   */
 case class NBodyConfig(name: String, discovered: Int, period: Double, energy: Double,
-  bodies: Array[Body])
+  angularMomentum: Double, bodies: Array[Body])
 
 /** Provides example configurations for testing. We use def instead of
   * val so that simulations could be run again and again.
@@ -196,6 +210,7 @@ object NBody {
     1975,
     6.283213,
     -0.854131,
+    1.098206,
     Array(
       new Body(1.0, Vec3(-0.9892620043, 0.0, 0.0),
       Vec3(0.0, 1.9169244185, 0.0)),
@@ -210,6 +225,7 @@ object NBody {
     1975,
     7.702408,
     -1.751113,
+    1.030573,
     Array(
       new Body(1.0, Vec3(0.3361300950, 0.0, 0.0),
         Vec3(0.0, 1.5324315370, 0.0)),
@@ -224,6 +240,7 @@ object NBody {
     1975,
     20.897689,
     -0.872459,
+    0.925495,
     Array(
       new Body(1.0, Vec3(0.0557080334, 0.0, 0.0),
         Vec3(0.0, 1.0824099428, 0.0)),
@@ -238,6 +255,7 @@ object NBody {
     1975,
     32.610953,
     -0.518368,
+    1.024216,
     Array(
       new Body(1.0, Vec3(-0.5426216182, 0.0, 0.0),
         Vec3(0.0, 0.8750200467, 0.0)),
@@ -255,6 +273,7 @@ object NBody {
       1993,
       6.324449,
       -1.287146,
+      0.0,
       Array(
         new Body(1.0, Vec3(-1.0, 0.0, 0.0),
           Vec3(p1, p2, 0.0)),
@@ -273,6 +292,7 @@ object NBody {
       2012,
       6.235641,
       -2.170195,
+      0.0,
       Array(
         new Body(1.0, Vec3(-1.0, 0.0, 0.0),
           Vec3(p1, p2, 0.0)),

@@ -86,6 +86,7 @@ class NBodySpec extends FunSpec with ShouldMatchers {
       for (config <- NBody.threeBodyConfigs) {
         val sim = new NBody(config, 0.0001) 
         Field.fieldD.≈(sim.totalEnergy(), config.energy) should be (true)
+        Field.fieldD.≈(sim.angularMomentum(), config.angularMomentum) should be (true)
         sim.evolve("rk4", 1.0)
         math.abs(sim.relativeEnergyError) should be < 1e-12
       }
