@@ -18,12 +18,18 @@ package object astro {
   /** Astronomical unit, in m */
   val AU = 149597870700.0
 
-  /** Equatorial radius of the Sun, in m */
+  // Following values are from http://nssdc.gsfc.nasa.gov/planetary/factsheet/sunfact.html
+  // Retrieved on 16 Jan 2014.
+
+  /** Volumetric mean radius of the Sun, in m */
   val Rsun = 6.96e8
 
-  /** Equatorial radius of the earth, in m */
-  val Rearth = 6.3781366e6
+  /** Luminosity, J / s */
+  val Lsun = 3.846e26
 
-  /** Equatorial radius of the moon, in m */
-  val Rmoon = 1.7374e6
+  /** Effective temperature, K */
+  val Tsun = 5778.0
+
+  /** Volumetric mean radius of the earth, in m */
+  val Rearth = 6.371e6
 }
