@@ -414,6 +414,81 @@ object NBody {
       new Body(1.0, Vec3(-1.9848711885, 0.0, 0.0),
         Vec3(0.0, -0.8223244626, 0.0))))
 
+  // Broucke A 11 in http://suki.ipb.ac.rs/3body/bsol.php?id=10
+  def brouckeA11Config = NBodyConfig(
+    "Broucke A 11",
+    1975,
+    32.584945,
+    -0.824047,
+    0.922542,
+    Array(
+      new Body(1.0, Vec3(0.0132604844, 0.0, 0.0),
+        Vec3(0.0, 1.0541519210, 0.0)),
+      new Body(1.0, Vec3(1.4157286016, 0.0, 0.0),
+        Vec3(0.0, -0.2101466639, 0.0)),
+      new Body(1.0, Vec3(-1.4289890859, 0.0, 0.0),
+        Vec3(0.0, -0.8440052572, 0.0))))
+
+  // Broucke A 12 in http://suki.ipb.ac.rs/3body/bsol.php?id=11
+  def brouckeA12Config = NBodyConfig(
+    "Broucke A 12",
+    1975,
+    42.823219,
+    -0.592101,
+    0.963712,
+    Array(
+      new Body(1.0, Vec3(-0.3370767020, 0.0, 0.0),
+        Vec3(0.0, 0.9174260238, 0.0)),
+      new Body(1.0, Vec3(2.1164029743, 0.0, 0.0),
+        Vec3(0.0, -0.0922665014, 0.0)),
+      new Body(1.0, Vec3(-1.7793262723, 0.0, 0.0),
+        Vec3(0.0, -0.8251595224, 0.0))))
+
+  // Broucke A 13 in http://suki.ipb.ac.rs/3body/bsol.php?id=12
+  def brouckeA13Config = NBodyConfig(
+    "Broucke A 13",
+    1975,
+    59.716075,
+    -0.432937,
+    1.163503,
+    Array(
+      new Body(1.0, Vec3(-0.8965015243, 0.0, 0.0),
+        Vec3(0.0, 0.8285556923, 0.0)),
+      new Body(1.0, Vec3(3.2352526189, 0.0, 0.0),
+        Vec3(0.0, -0.0056478094, 0.0)),
+      new Body(1.0, Vec3(-2.3387510946, 0.0, 0.0),
+        Vec3(0.0, -0.8229078829, 0.0))))
+
+  // Broucke A 14 in http://suki.ipb.ac.rs/3body/bsol.php?id=13
+  def brouckeA14Config = NBodyConfig(
+    "Broucke A 14",
+    1975,
+    54.230811,
+    -0.625794,
+    0.947463,
+    Array(
+      new Body(1.0, Vec3(-0.2637815221, 0.0, 0.0),
+        Vec3(0.0, 0.9371630895, 0.0)),
+      new Body(1.0, Vec3(1.9698126146, 0.0, 0.0),
+        Vec3(0.0, -0.1099503287, 0.0)),
+      new Body(1.0, Vec3(-1.7060310924, 0.0, 0.0),
+        Vec3(0.0, -0.8272127608, 0.0))))
+
+  // Broucke A 15 in http://suki.ipb.ac.rs/3body/bsol.php?id=14
+  def brouckeA15Config = NBodyConfig(
+    "Broucke A 15",
+    1975,
+    92.056119,
+    -0.383678,
+    1.297157,
+    Array(
+      new Body(1.0, Vec3(-1.1889693067, 0.0, 0.0),
+        Vec3(0.0, 0.8042120498, 0.0)),
+      new Body(1.0, Vec3(3.8201881837, 0.0, 0.0),
+        Vec3(0.0, 0.0212794833, 0.0)),
+      new Body(1.0, Vec3(-2.6312188770, 0.0, 0.0),
+        Vec3(0.0, -0.8254915331, 0.0))))
+
   // Figure 8 in http://suki.ipb.ac.rs/3body/sol.php?id=1
   def figure8Config = {
     val p1 = 0.347111
@@ -452,11 +527,51 @@ object NBody {
           Vec3(-2.0 * p1, -2.0 * p2, 0.0))))
   }
 
+  // Ying-yang 2a in http://suki.ipb.ac.rs/3body/sol.php?id=15
+  def yingYang2aConfig = {
+    val p1 = 0.416822
+    val p2 = 0.330333
+    NBodyConfig(
+      "Ying-yang 2a",
+      2012,
+      55.789829,
+      -1.651418,
+      0.0,
+      Array(
+        new Body(1.0, Vec3(-1.0, 0.0, 0.0),
+          Vec3(p1, p2, 0.0)),
+        new Body(1.0, Vec3(1.0, 0.0, 0.0),
+          Vec3(p1, p2, 0.0)),
+        new Body(1.0, Vec3(0.0, 0.0, 0.0),
+          Vec3(-2.0 * p1, -2.0 * p2, 0.0))))
+  }
+
+  // Ying-yang 2b in http://suki.ipb.ac.rs/3body/sol.php?id=16
+  def yingYang2bConfig = {
+    val p1 = 0.417343
+    val p2 = 0.313100
+    NBodyConfig(
+      "Ying-yang 2b",
+      2012,
+      54.207599,
+      -1.683380,
+      0.0,
+      Array(
+        new Body(1.0, Vec3(-1.0, 0.0, 0.0),
+          Vec3(p1, p2, 0.0)),
+        new Body(1.0, Vec3(1.0, 0.0, 0.0),
+          Vec3(p1, p2, 0.0)),
+        new Body(1.0, Vec3(0.0, 0.0, 0.0),
+          Vec3(-2.0 * p1, -2.0 * p2, 0.0))))
+  }
+
   def threeBodyConfigs = Array(
     brouckeA1Config, brouckeA2Config, brouckeA3Config, brouckeA4Config, 
     brouckeA5Config, brouckeA6Config, brouckeA7Config, brouckeA8Config, 
-    brouckeA9Config, brouckeA10Config,
+    brouckeA9Config, brouckeA10Config, brouckeA11Config, brouckeA12Config,
+    brouckeA13Config, brouckeA14Config, brouckeA15Config,
     figure8Config,
-    butterflyIConfig
+    butterflyIConfig,
+    yingYang2aConfig, yingYang2bConfig
   )
 }
