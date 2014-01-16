@@ -1,43 +1,115 @@
 /**
- * N-body simulation.
- *
- * @author  Yujian Zhang <yujian{dot}zhang[at]gmail(dot)com>
- *
- * License:
- *   GNU General Public License v2
- *   http://www.gnu.org/licenses/gpl-2.0.html
- * Copyright (C) 2013 Yujian Zhang
- */
+  * N-body simulation. 
+  * 
+  * Reference: http://www.artcompsci.org/kali/vol/indiv_timesteps_1/volume15.pdf
+  * 
+  * @author  Yujian Zhang <yujian{dot}zhang[at]gmail(dot)com>
+  *
+  * License:
+  *   GNU General Public License v2
+  *   http://www.gnu.org/licenses/gpl-2.0.html
+  * Copyright (C) 2013 Yujian Zhang
+  */
 
 package net.whily.scasci.phys
 
 import net.whily.scasci.math.linalg._
 
 /** Physical particle for N-body simulation.  We use the general term
-  * instead of specific names like particles.
+  * instead of specific names like particles. Individual time step
+  * approach is used.
   *
   * @param mass in kg
   * @param pos position in m
   * @param vel velocity in m / s
   */
 class Body(val mass: Double, var pos: Vec3, var vel: Vec3) {
-  /** jerk in m / s^3 */
-  val jerk = Vec3.zeros
+  /** acceleration in m / s^2 */
+  var acc = Vec3.zeros
 
-  /** Return the acceleration in m / s^2 */
-  def acc(bodies: Array[Body]) = {
-    var a = Vec3.zeros
+  /** jerk in m / s^3 */
+  var jerk = Vec3.zeros
+
+  var time = 0.0
+  var nextTime = 0.0
+  var predPos = Vec3.zeros
+  var predVel = Vec3.zeros
+
+  def autonomousStep(bodies: Array[Body] , ΔtParam: Double) {
+    takeOneStep(bodies, nextTime, ΔtParam)
+  }
+
+  def forcedStep(bodies: Array[Body], t: Double, ΔtParam: Double) {
+    takeOneStep(bodies, t, ΔtParam)
+  }
+
+  def takeOneStep(bodies: Array[Body], t: Double, ΔtParam: Double) {
+    for (body <- bodies) body.predictStep(t)
+    correctStep(bodies, t, ΔtParam)
+  }
+
+  def predictStep(t: Double) {
+    assert(t <= nextTime)
+    val Δt = t - time
+    predPos = pos + vel * Δt + acc * (Δt * Δt / 2.0) + jerk * (Δt * Δt * Δt / 6.0)
+    predVel = vel + acc * Δt + jerk * (Δt * Δt / 2.0)
+  }
+
+  def correctStep(bodies: Array[Body], t: Double, ΔtParam: Double) {
+    val Δt = t - time
+    val (newAcc, newJerk) = getAccAndJerk(bodies)
+    val newVel = vel + (acc + newAcc) * (Δt / 2.0) + 
+      (jerk - newJerk) * (Δt * Δt / 12.0)
+    val newPos = pos + (vel + newVel) * (Δt / 2.0) +
+      (acc - newAcc) * (Δt * Δt / 12.0)
+    pos.copyFrom(newPos)
+    vel.copyFrom(newVel)
+    acc.copyFrom(newAcc)
+    jerk.copyFrom(newJerk)
+    predPos.copyFrom(pos)
+    predVel.copyFrom(vel)
+    time = t
+    nextTime = time + collisionTimeScale(bodies) * ΔtParam
+  }
+
+  def collisionTimeScale(bodies: Array[Body]) = {
+    var timeScaleSq = 1e300 // A very large number.
     for (body <- bodies) {
       if (!(body eq this)) {
-        val r = body.pos - pos
+        val r = body.predPos - predPos
+        val v = body.predVel - predVel
         val r2 = r ⋅ r
-        val r3 = r2 * math.sqrt(r2)
-        a += r * (body.mass / r3)
+        val v2 = v ⋅ v
+        var estimateSq = r2 / v2
+        if (timeScaleSq > estimateSq) {
+          timeScaleSq = estimateSq
+        }
+        val a = (mass + body.mass) / r2
+        estimateSq = math.sqrt(r2) / a
+        if (timeScaleSq > estimateSq) {
+          timeScaleSq = estimateSq
+        }
       }
     }
-    a
+    math.sqrt(timeScaleSq)
+  }
+
+  def getAccAndJerk(bodies: Array[Body]) = {
+    var a = Vec3.zeros
+    var j = Vec3.zeros
+    for (body <- bodies) {
+      if (!(body eq this)) {
+        val r = body.predPos - predPos
+        val r2 = r ⋅ r
+        val r3 = r2 * math.sqrt(r2)
+        val v = body.predVel - predVel
+        a += r * (body.mass / r3)
+        j += (v - r * (3 * (r ⋅ v) / r2)) * (body.mass / r3)
+      }
+    }
+    (a, j)
     // We assume G = 1, otherwise, use the following line
-    // a * G
+    // (a * G, j * G)
   }
 
   /** Returns the kinetic energy of the particle. */
@@ -64,7 +136,8 @@ class Body(val mass: Double, var pos: Vec3, var vel: Vec3) {
   }
 }
 
-/** Performs N-body simulation. Based on http://www.artcompsci.org/kali/development.html
+/** Performs N-body simulation with individual time step, Hermite integrator. Based on
+  * http://www.artcompsci.org/kali/development.html
   *
   * In N-body simulation, we normally assume G = 1.
   *
@@ -75,38 +148,59 @@ class Body(val mass: Double, var pos: Vec3, var vel: Vec3) {
   * }}}
   *
   * @param bodies bodies for simulation. Positions and velocities are already initialized.
-  * @param Δt time quantum in s
+  * @param ΔtParam parameter controlling time quantum, in s
   * @param duration simulation running duration
   */
-class NBody(val bodies: Array[Body], val Δt: Double) {
+class NBody(val bodies: Array[Body], val ΔtParam: Double) {
   private val n = bodies.length
   var time = 0.0
   val initialEnergy = totalEnergy()
+  for (body <- bodies) {
+    body.predPos.copyFrom(body.pos)
+    body.predVel.copyFrom(body.vel)
+  }
+  for (body <- bodies) {
+    val (a, j) = body.getAccAndJerk(bodies)
+    body.acc.copyFrom(a)
+    body.jerk.copyFrom(j)
+    body.time = time
+    body.nextTime = time + body.collisionTimeScale(bodies) * ΔtParam
+  }
 
   def this(config: NBodyConfig, Δt: Double) = this(config.bodies, Δt)
 
   /** Run N-body simulation until current time >= tEnd. 
     * 
-    * @param integrator numerical intergrator
+    * @param tEnd the end time
     */
-  def evolve(integrator: String, duration: Double) {
-    val tEnd = duration - 0.5 * Δt
+  def evolve(tEnd: Double) {
     while (time < tEnd) {
-      step(integrator)
+      val np = findNextParticle()
+      time = np.nextTime
+      if (time < tEnd) {
+        np.autonomousStep(bodies, ΔtParam)
+      }
     }
+    sync(tEnd)
   }
 
-  /** Runs N-body simulation with one step.
-    *
-    * @param integrator numerical intergrator
-    */
-  def step(integrator: String) {
-    time += Δt
-    integrator match {
-      case "leapfrog" => leapfrog()
-      case "rk2" => rk2()
-      case "rk4" => rk4()
+  def findNextParticle() = {
+    var nextTime = 1e300 // A very large number.
+    var nextParticle: Body = null
+    for (body <- bodies) {
+      if (nextTime > body.nextTime) {
+        nextTime = body.nextTime
+        nextParticle = body
+      }
     }
+    nextParticle
+  }
+
+  def sync(t: Double) {
+    for (body <- bodies) {
+      body.forcedStep(bodies, t, ΔtParam)
+    }
+    time = t
   }
 
   /** Returns the kinetic energy of the system. */
@@ -129,40 +223,6 @@ class NBody(val bodies: Array[Body], val Δt: Double) {
     for (body <- bodies)
       sum += body.angularMomentum()
     sum.norm
-  }
-
-  /** Leapfrog algorithm, which is 2nd order. Algorithm details in
-    * http://www.artcompsci.org/vol_1/v1_web/node34.html
-    */
-  def leapfrog() {
-    for (b <- bodies) b.vel += b.acc(bodies) * (0.5 * Δt)
-    for (b <- bodies) b.pos += b.vel * Δt
-    for (b <- bodies) b.vel += b.acc(bodies) * (0.5 * Δt)
-  }
-
-  /** Second-order Runge-Kutta integrator. */
-  def rk2() {
-    val oldPos = bodies map (_.pos.copy())
-    val halfVel = bodies map (b => b.vel + b.acc(bodies) * (0.5 * Δt))
-    for (b <- bodies) b.pos += b.vel * (0.5 * Δt)
-    for (b <- bodies) b.vel += b.acc(bodies) * Δt
-    for (i <- 0 until n) bodies(i).pos = oldPos(i) + halfVel(i) * Δt
-  }
-
-  /** Fourth-order Runge-Kutta integrator. */
-  def rk4() {
-    val oldPos = bodies map (_.pos.copy())
-    val a0 = bodies map (_.acc(bodies))
-    for (i <- 0 until n)
-      bodies(i).pos = oldPos(i) + bodies(i).vel * (0.5 * Δt) + a0(i) * (0.125 * Δt * Δt)
-    val a1 = bodies map (_.acc(bodies))
-    for (i <- 0 until n)
-      bodies(i).pos = oldPos(i) + bodies(i).vel * Δt + a1(i) * (0.5 * Δt * Δt)
-    val a2 = bodies map (_.acc(bodies))
-    for (i <- 0 until n)
-      bodies(i).pos = oldPos(i) + bodies(i).vel * Δt + (a0(i) + a1(i) * 2) * (1.0 / 6.0 * Δt * Δt)
-    for (i <- 0 until n)
-      bodies(i).vel += (a0(i) + a1(i) * 4 + a2(i)) * (1.0 / 6.0 * Δt)
   }
 }
 
@@ -396,7 +456,7 @@ object NBody {
     brouckeA1Config, brouckeA2Config, brouckeA3Config, brouckeA4Config, 
     brouckeA5Config, brouckeA6Config, brouckeA7Config, brouckeA8Config, 
     brouckeA9Config, brouckeA10Config,
-    figure8Config 
-    // TODO: removed for now due to near encouter problem: butterflyIConfig
+    figure8Config,
+    butterflyIConfig
   )
 }
