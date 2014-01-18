@@ -565,13 +565,61 @@ object NBody {
           Vec3(-2.0 * p1, -2.0 * p2, 0.0))))
   }
 
+  // 3-chain and 4-chain solutions from http://www.maia.ub.es/dsg/2000/0002simo.ps.gz
+  // Also see the movie in http://www.maia.ub.es/dsg/nbody
+
+  // 3-chain
+  def threeChainConfig = {
+    NBodyConfig(
+      "3-chain",
+      2000, // Not sure
+      2.0 * math.Pi,
+      -2.5735495, // This is actually calculated.
+      1.02969158, // This is actually calculated. Why not 0?
+      Array(
+        new Body(1.0, Vec3(1.382857, 0.0, 0.0),
+          Vec3(0.0, 0.584873, 0.0)),
+        new Body(1.0, Vec3(0.0, 0.157030, 0.0),
+          Vec3(1.871935, 0.0, 0.0)),
+        new Body(1.0, Vec3(-1.382857, 0.0, 0.0),
+          Vec3(0.0, -0.584873, 0.0)),
+        new Body(1.0, Vec3(0.0, -0.157030, 0.0),
+          Vec3(-1.871935, 0.0, 0.0))))
+  }
+
+  // 4-chain
+  def fourChainConfig = {
+    NBodyConfig(
+      "4-chain",
+      2000, // Not sure
+      2.0 * math.Pi,
+      -4.2635737, // This is actually calculated.
+      1.17137800E-6, // This is actually calculated. Why not 0?
+      Array(
+        // 1.657666 and -0.593786 are calculated from center-of-mass condition
+        // and zero total momentum, respectively. Not sure whether it is really correct.
+        new Body(1.0, Vec3(1.657666, 0.0, 0.0),  
+          Vec3(0.0, -0.593786, 0.0)),
+        new Body(1.0, Vec3(0.439775, -0.169717, 0.0),
+          Vec3(1.822785, 0.128248, 0.0)),
+        new Body(1.0, Vec3(-1.268608, -0.267651, 0.0),
+          Vec3(1.271564, 0.168645, 0.0)),
+        new Body(1.0, Vec3(-1.268608, 0.267651, 0.0),
+          Vec3(-1.271564, 0.168645, 0.0)),
+        new Body(1.0, Vec3(0.439775, 0.169717, 0.0),
+          Vec3(-1.822785, 0.128248, 0.0))))
+  }
+
+  // http://www.ams.org/notices/200105/fea-montgomery.pdf
+
   def threeBodyConfigs = Array(
     brouckeA1Config, brouckeA2Config, brouckeA3Config, brouckeA4Config, 
     brouckeA5Config, brouckeA6Config, brouckeA7Config, brouckeA8Config, 
     brouckeA9Config, brouckeA10Config, brouckeA11Config, brouckeA12Config,
     brouckeA13Config, brouckeA14Config, brouckeA15Config,
-    figure8Config,
+    figure8Config, 
     butterflyIConfig,
-    yingYang2aConfig, yingYang2bConfig
+    yingYang2aConfig, yingYang2bConfig,
+    threeChainConfig, fourChainConfig
   )
 }
