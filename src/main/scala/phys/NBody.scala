@@ -489,6 +489,51 @@ object NBody {
       new Body(1.0, Vec3(-2.6312188770, 0.0, 0.0),
         Vec3(0.0, -0.8254915331, 0.0))))
 
+  // Broucke A 16 in http://suki.ipb.ac.rs/3body/bsol.php?id=15
+  def brouckeA16Config = NBodyConfig(
+    "Broucke A 16",
+    1975,
+    90.871196,
+    -0.468864 ,
+    1.093094,
+    Array(
+      new Body(1.0, Vec3(-0.7283341038, 0.0, 0.0),
+        Vec3(0.0, 0.8475982451, 0.0)),
+      new Body(1.0, Vec3(2.8989177778, 0.0, 0.0),
+        Vec3(0.0, -0.0255162097, 0.0)),
+      new Body(1.0, Vec3(-2.1705836741, 0.0, 0.0),
+        Vec3(0.0, -0.8220820354, 0.0))))
+
+  // Broucke R1 in http://suki.ipb.ac.rs/3body/bsol.php?id=16
+  def brouckeR1Config = NBodyConfig(
+    "Broucke R 1",
+    1975,
+    5.226525,
+    -1.464959,
+    1.606147,
+    Array(
+      new Body(1.0, Vec3(0.8083106230, 0.0, 0.0),
+        Vec3(0.0, 0.9901979166, 0.0)),
+      new Body(1.0, Vec3(-0.4954148566, 0.0, 0.0),
+        Vec3(0.0, -2.7171431768, 0.0)),
+      new Body(1.0, Vec3(-0.3128957664, 0.0, 0.0),
+        Vec3(0.0, 1.7269452602, 0.0))))
+
+  // Broucke R2 in http://suki.ipb.ac.rs/3body/bsol.php?id=17
+  def brouckeR2Config = NBodyConfig(
+    "Broucke R 2",
+    1975,
+    5.704198,
+    -1.621650,
+    1.854913,
+    Array(
+      new Body(1.0, Vec3(0.9060893715, 0.0, 0.0),
+        Vec3(0.0, 0.9658548899, 0.0)),
+      new Body(1.0, Vec3(-0.6909723536, 0.0, 0.0),
+        Vec3(0.0, -1.6223214842, 0.0)),
+      new Body(1.0, Vec3(-0.2151170179, 0.0, 0.0),
+        Vec3(0.0, 0.6564665942, 0.0))))
+
   // Figure 8 in http://suki.ipb.ac.rs/3body/sol.php?id=1
   def figure8Config = {
     val p1 = 0.347111
@@ -616,7 +661,8 @@ object NBody {
     brouckeA1Config, brouckeA2Config, brouckeA3Config, brouckeA4Config, 
     brouckeA5Config, brouckeA6Config, brouckeA7Config, brouckeA8Config, 
     brouckeA9Config, brouckeA10Config, brouckeA11Config, brouckeA12Config,
-    brouckeA13Config, brouckeA14Config, brouckeA15Config,
+    brouckeA13Config, brouckeA14Config, brouckeA15Config, brouckeA16Config,
+    brouckeR1Config, brouckeR2Config,
     figure8Config, 
     butterflyIConfig,
     yingYang2aConfig, yingYang2bConfig,
