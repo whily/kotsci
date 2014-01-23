@@ -534,6 +534,66 @@ object NBody {
       new Body(1.0, Vec3(-0.2151170179, 0.0, 0.0),
         Vec3(0.0, 0.6564665942, 0.0))))
 
+  // Broucke R3 in http://suki.ipb.ac.rs/3body/bsol.php?id=18
+  def brouckeR3Config = NBodyConfig(
+    "Broucke R 3",
+    1975,
+    5.560814,
+    -1.839988,
+    1.818675,
+    Array(
+      new Body(1.0, Vec3(0.8920281421, 0.0, 0.0),
+        Vec3(0.0, 0.9957939373, 0.0)),
+      new Body(1.0, Vec3(-0.6628498947, 0.0, 0.0),
+        Vec3(0.0, -1.6191613336, 0.0)),
+      new Body(1.0, Vec3(-0.2291782474, 0.0, 0.0),
+        Vec3(0.0, 0.6233673964, 0.0))))
+
+  // Broucke R4 in http://suki.ipb.ac.rs/3body/bsol.php?id=19
+  def brouckeR4Config = NBodyConfig(
+    "Broucke R 4",
+    1975,
+    5.395826,
+    -2.054282,
+    1.768757,
+    Array(
+      new Body(1.0, Vec3(0.8733047091, 0.0, 0.0),
+        Vec3(0.0, 1.0107764436, 0.0)),
+      new Body(1.0, Vec3(-0.6254030288, 0.0, 0.0),
+        Vec3(0.0, -1.6833533458, 0.0)),
+      new Body(1.0, Vec3(-0.2479016803, 0.0, 0.0),
+        Vec3(0.0, 0.6725769022, 0.0))))
+
+  // Broucke R5 in http://suki.ipb.ac.rs/3body/bsol.php?id=20
+  def brouckeR5Config = NBodyConfig(
+    "Broucke R 5",
+    1975,
+    5.266911,
+    -2.255913,
+    1.728059,
+    Array(
+      new Body(1.0, Vec3(0.8584630769, 0.0, 0.0),
+        Vec3(0.0, 1.0204773541, 0.0)),
+      new Body(1.0, Vec3(-0.5957197644, 0.0, 0.0),
+        Vec3(0.0, -1.7535566440, 0.0)),
+      new Body(1.0, Vec3(-0.2627433125, 0.0, 0.0),
+        Vec3(0.0, 0.7330792899, 0.0))))
+
+  // Broucke R6 in http://suki.ipb.ac.rs/3body/bsol.php?id=21
+  def brouckeR6Config = NBodyConfig(
+    "Broucke R 6",
+    1975,
+    5.167384,
+    -2.446044,
+    1.695559,
+    Array(
+      new Body(1.0, Vec3(0.8469642946, 0.0, 0.0),
+        Vec3(0.0, 1.0275065708, 0.0)),
+      new Body(1.0, Vec3(-0.5727221998, 0.0, 0.0),
+        Vec3(0.0, -1.8209307202, 0.0)),
+      new Body(1.0, Vec3(-0.2742420948, 0.0, 0.0),
+        Vec3(0.0, 0.7934241494, 0.0))))
+
   // Figure 8 in http://suki.ipb.ac.rs/3body/sol.php?id=1
   def figure8Config = {
     val p1 = 0.347111
@@ -662,7 +722,7 @@ object NBody {
     brouckeA5Config, brouckeA6Config, brouckeA7Config, brouckeA8Config, 
     brouckeA9Config, brouckeA10Config, brouckeA11Config, brouckeA12Config,
     brouckeA13Config, brouckeA14Config, brouckeA15Config, brouckeA16Config,
-    brouckeR1Config, brouckeR2Config,
+    brouckeR1Config, brouckeR2Config, brouckeR3Config, brouckeR4Config, brouckeR5Config, brouckeR6Config,
     figure8Config, 
     butterflyIConfig,
     yingYang2aConfig, yingYang2bConfig,
