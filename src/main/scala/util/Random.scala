@@ -42,32 +42,71 @@ class Random(seed: Int) {
 
   /** Returns the next pseudorandom, uniformly distributed boolean value from
     * this random number generator's sequence. */
-  def nextBoolean(): Boolean = true
+  def nextBoolean(): Boolean = (nextUnsignedInt32() & 1L) == 0L
 
   /** Returns the next pseudorandom, uniformly distributed double value [0, 1)
     * from this random number generator's sequence. */
   def nextDouble(): Double =   nextUnsignedInt32() * (1.0 / 4294967296.0)
 
+  // Since Gaussian variables are generated in a pair, we keep the extra
+  // one here.
+  private var hasNextNextGaussian = false
+  private var nextNextGaussian = 0.0
+
   /** Returns the next pseudorandom, Gaussian ("normally") distributed double 
     * value N(0, 1). */
   def nextGaussian(): Double = {
-    // TODO
-    assert(false)
-    1.0
+    // Use polar form of the Box Muller method as in
+    // http://www.design.caltech.edu/erik/Misc/Gaussian.html
+    // We use StrictMath by following http://docs.oracle.com/javase/7/docs/api/java/util/Random.html#nextGaussian()
+
+    if (hasNextNextGaussian) {
+      hasNextNextGaussian = false
+      nextNextGaussian
+    } else {
+      var x1 = 0.0
+      var x2 = 0.0
+      var w = 0.0
+ 
+      do {
+        x1 = 2.0 * nextDouble() - 1.0
+        x2 = 2.0 * nextDouble() - 1.0
+        w = x1 * x1 + x2 * x2
+      } while (w >= 1.0)
+
+      w = StrictMath.sqrt((-2.0 * StrictMath.log(w)) / w)
+      hasNextNextGaussian = true
+      nextNextGaussian = x2 * w
+      x1 * w
+    }
   }
 
   /** Returns a pseudorandom, uniformly distributed int value between 
     * 0 (inclusive) and the specified value (exclusive), drawn from 
     * this random number generator's sequence. */
   def nextInt(n: Int): Int = {
-    // TODO
-    assert(false)
-    1
+    // Straighforward modulo implementation is not accurate. Rejection method
+    // is used
+    if (n <= 0)
+      throw new IllegalArgumentException("n must be positive");
+
+    val RandMax = 0xffffffffL
+    val nn = n.toLong
+    val top = ((RandMax + 1L) / nn) * nn - 1L
+    var r = 0L
+    do {
+      r = nextUnsignedInt32()
+    } while (r > top)
+    (r % n).toInt
   }
 
   /** Returns the next pseudorandom, uniformly distributed int value from this 
     * random number generator's sequence. */
   def nextInt(): Int = nextUnsignedInt32().toInt
+
+  /** Returns the next pseudorandom, uniformly distributed long value from this 
+    * random number generator's sequence. */
+  def nextLong(): Long = (nextUnsignedInt32() << 32) + nextUnsignedInt32()
 
   /** Returns the next pseudorandom, uniformly distributed integer value
     * in [0, 0xffffffff] */
