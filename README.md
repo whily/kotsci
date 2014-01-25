@@ -12,6 +12,8 @@ Features to include:
 
 * [Linear algebra](doc/Linear-Algebra.md)
 * Artificial intelligence 
+* Utilities
+** Random number generator (Uniform Int/Double, Gaussian distribution)
 
 For more information about Scasci, please go to
   <https://github.com/whily/scasci>
