@@ -51,7 +51,7 @@ class Vec3(var x: Double, var y: Double, var z: Double) {
     throw new IllegalArgumentException("Vec3: hashCode not supported.")
 
   /** Approximately equal. */
-  def ≈  (that: Vec3): Boolean = {
+  def ≈ (that: Vec3): Boolean = {
     val e = Field.fieldD
     e.≈(x, that.x) && e.≈(y, that.y) && e.≈(z, that.z)
   }
