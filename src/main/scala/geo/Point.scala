@@ -13,4 +13,11 @@ package net.whily.scasci.geo
 
 /** 2D Point.
   */
-case class Point(x: Double, y: Double)
+case class Point(x: Double, y: Double) {
+  /** Return Euclidian distance from this point to `that`. */
+  def distTo(that: Point) = {
+    val dx = x - that.x
+    val dy = y - that.y
+    math.sqrt(dx * dx + dy * dy)
+  }
+}
