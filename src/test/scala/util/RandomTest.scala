@@ -30,8 +30,8 @@ class RandomSpec extends FunSpec with ShouldMatchers {
       for (i <- 0 until 1000) {
         b(i) = rng.nextDouble()
       }
-      b(0) should be (0.58224916 plusOrMinus 0.00000001)
-      b(999) should be (0.91948258 plusOrMinus 0.00000001)
+      b(0) should be (0.58224916 +- 0.00000001)
+      b(999) should be (0.91948258 +- 0.00000001)
     }
   }
 }
