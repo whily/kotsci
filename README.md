@@ -21,6 +21,9 @@ For more information about Scasci, please go to
 Wiki pages can be found at
   <https://wiki.github.com/whily/scasci>
 
+[Travis CI](http://travis-ci.org/) is used to verify the build:
+[![Build Status](https://secure.travis-ci.org/whily/scasci.png)](http://travis-ci.org/whily/scasci)
+
 Development
 -----------
 
