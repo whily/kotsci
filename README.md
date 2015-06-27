@@ -1,7 +1,7 @@
-[![Build Status](https://secure.travis-ci.org/whily/scasci.png)](http://travis-ci.org/whily/scasci)
-
 scasci
 ======
+
+[![Build Status](https://secure.travis-ci.org/whily/scasci.png)](http://travis-ci.org/whily/scasci)
 
 Scasci is a self-contained Scala library for scientific
 computation. The target is to provide a NumPy/SciPy like Scala library
