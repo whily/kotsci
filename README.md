@@ -13,7 +13,7 @@ separate project.
 Features to include:
 
 * [Linear algebra](doc/Linear-Algebra.md)
-* Artificial intelligence 
+* Artificial intelligence
 * Utilities
   * Random number generator (Uniform Int/Double, Gaussian distribution)
 
@@ -28,12 +28,12 @@ Development
 
 The following tools are needed to build Scasci from source:
 
-* JDK version 6/7 from <http://www.java.com> if Java is not available. 
+* JDK version 6/7 from <http://www.java.com> if Java is not available.
   Note that JDK is preinstalled on Mac OS X and available via package manager
-  on many Linux systems. 
-* Scala (2.11.0)
-* sbt (0.12.4)
-  
+  on many Linux systems.
+* Scala (2.11.6)
+* sbt (0.13.8)
+
 The project follows general sbt architecture, therefore normal sbt
 commands can be used to build the library: compile, doc, test,
 etc. For details, please refer
