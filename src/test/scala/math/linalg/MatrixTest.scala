@@ -1,19 +1,19 @@
 /**
  * Test cases for Matrix.scala.
- * 
+ *
  * @author  Yujian Zhang <yujian{dot}zhang[at]gmail(dot)com>
  *
- * License: 
+ * License:
  *   GNU General Public License v2
  *   http://www.gnu.org/licenses/gpl-2.0.html
  * Copyright (C) 2013 Yujian Zhang
  */
 
 import net.whily.scasci.math.linalg._
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.Matchers
 import org.scalatest.FunSpec
- 
-class MatrixSpec extends FunSpec with ShouldMatchers {
+
+class MatrixSpec extends FunSpec with Matchers {
   val v = Vector(1.0, 2.0, 3.0)
 
   describe("For vector [1 2 3]'") {
@@ -34,9 +34,7 @@ class MatrixSpec extends FunSpec with ShouldMatchers {
     }
 
     it("wrong index should raise an exception") {
-      evaluating {
-        v(5)
-      } should produce [IndexOutOfBoundsException]
+      an [IndexOutOfBoundsException] should be thrownBy v(5)
     }
 
     it("after fill") {

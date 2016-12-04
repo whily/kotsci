@@ -1,9 +1,9 @@
 import net.whily.scasci.collection.Graph
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.Matchers
 import org.scalatest.FunSpec
 import scala.collection.mutable
 
-class GraphSpec extends FunSpec with ShouldMatchers {
+class GraphSpec extends FunSpec with Matchers {
   describe("In class Graph") {
     it("find() should work for example in http://en.wikipedia.org/wiki/Dijkstra's_algorithm") {
       var map = new mutable.HashMap[(String, String), Int]()

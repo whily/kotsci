@@ -1,19 +1,19 @@
 /**
  * Test cases for Vec.scala.
- * 
+ *
  * @author  Yujian Zhang <yujian{dot}zhang[at]gmail(dot)com>
  *
- * License: 
+ * License:
  *   GNU General Public License v2
  *   http://www.gnu.org/licenses/gpl-2.0.html
  * Copyright (C) 2013 Yujian Zhang
  */
 
 import net.whily.scasci.math.linalg.Vec3
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.Matchers
 import org.scalatest.FunSpec
- 
-class Vec3Spec extends FunSpec with ShouldMatchers {
+
+class Vec3Spec extends FunSpec with Matchers {
   describe("In class Vec3") {
     it("fill") {
       val x = Vec3(1.0, 2.0, 3.0)

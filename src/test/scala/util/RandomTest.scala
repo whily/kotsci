@@ -1,19 +1,19 @@
 /**
  * Test cases for Vec.scala.
- * 
+ *
  * @author  Yujian Zhang <yujian{dot}zhang[at]gmail(dot)com>
  *
- * License: 
+ * License:
  *   GNU General Public License v2
  *   http://www.gnu.org/licenses/gpl-2.0.html
  * Copyright (C) 2014 Yujian Zhang
  */
 
 import net.whily.scasci.util.Random
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.Matchers
 import org.scalatest.FunSpec
- 
-class RandomSpec extends FunSpec with ShouldMatchers {
+
+class RandomSpec extends FunSpec with Matchers {
   describe("Test RNG output") {
     val rng = new Random(5489)
     it("For the first 1000 integers, check the first and the last") {

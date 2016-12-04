@@ -1,9 +1,9 @@
 /**
  * Test cases for NBody.scala.
- * 
+ *
  * @author  Yujian Zhang <yujian{dot}zhang[at]gmail(dot)com>
  *
- * License: 
+ * License:
  *   GNU General Public License v2
  *   http://www.gnu.org/licenses/gpl-2.0.html
  * Copyright (C) 2013 Yujian Zhang
@@ -12,10 +12,10 @@
 import net.whily.scasci.math._
 import net.whily.scasci.math.linalg._
 import net.whily.scasci.phys._
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.Matchers
 import org.scalatest.FunSpec
- 
-class NBodySpec extends FunSpec with ShouldMatchers {
+
+class NBodySpec extends FunSpec with Matchers {
   describe("Two body as in section 3.1 and 4.7 of http://www.artcompsci.org/kali/vol/n_body_problem/volume4.pdf") {
     val sim = NBody.twoBodyParamSim
     sim.evolve(10.0)
@@ -72,7 +72,7 @@ class NBodySpec extends FunSpec with ShouldMatchers {
   describe("Test energy of three body configurations from http://suki.ipb.ac.rs/3body/") {
     it("Energy test") {
       for (config <- NBody.threeBodyConfigs) {
-        val sim = new NBody(config, 0.0001) 
+        val sim = new NBody(config, 0.0001)
         Field.fieldD.≈(sim.totalEnergy(), config.energy) should be (true)
         Field.fieldD.≈(sim.angularMomentum(), config.angularMomentum) should be (true)
         sim.evolve(1.0)
